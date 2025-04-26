@@ -10,7 +10,7 @@ var uploads = multer( {
 
 const app = express();
 
-app.post( '/', uploads.single('avatar'), ( req, res ) =>
+app.post( '/', uploads.array('avatar', 3), ( req, res ) =>
 {
     res.status( 200 ).send( "Hello World" );
 } );
