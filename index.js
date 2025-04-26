@@ -1,11 +1,38 @@
 const express = require('express');
-const multer = require('multer');
+const multer = require( 'multer' );
+const path = require("path");
 const port = process.env.PORT || 5000;
 
 const upFolder = "./uploads/";
 
+const storage = multer.diskStorage( {
+    destination: function ( req, file, cb )
+    {
+        cb( null, upFolder );
+    },
+    // filename: function ( req, file, cb )
+    // {
+    //     const uniqueSuffix = Date.now() + '-' + Math.round( Math.random() * 1E9 );
+    //     cb( null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split( '/' )[ 1 ] );
+    // }
+    filename: ( req, file, cb ) =>
+    {
+        const fileExt = path.extname( file.originalname );
+        const fileName =
+            file.originalname
+                .replace( fileExt, "" )
+                .toLowerCase()
+                .split( " " )
+                .join( "-" ) +
+            "-" +
+            Date.now();
+
+        cb( null, fileName + fileExt );
+    },
+} );
+
 const uploads = multer({
-    dest: upFolder,
+    storage: storage,
     limits: {
         fileSize: 1024 * 1024 * 5 // 5 MB
     },
@@ -40,7 +67,9 @@ app.post('/', uploads.fields([
     { name: 'avatar', maxCount: 1 },
     { name: 'photos', maxCount: 10 },
     { name: 'pdf', maxCount: 5 }
-]), (req, res) => {
+] ), ( req, res ) =>
+{
+    console.log( req.files );
     res.status(200).send("Files uploaded successfully 🚀");
 });
 
