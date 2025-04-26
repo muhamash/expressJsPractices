@@ -39,6 +39,26 @@ app.post( '/', uploads.fields( [ {
     res.status( 200 ).send( "Hello World" );
 } );
 
+app.use( ( error, req, res, next ) =>
+{
+    if ( error )
+    {
+        if ( error instanceof multer.MulterError )
+        {
+            return res.status( 500 ).json( { error: error.message } );
+        }
+        else if ( error )
+        {
+            return res.status( 500 ).json( { error: error } );
+        }
+    }
+    else
+    {
+        return res.status( 200 ).json( { message: "File uploaded successfully" } );
+    }
+    next();
+} );
+
 app.listen( port, () =>
 {
     console.log( `Server running on port ${port} 🔥` );
