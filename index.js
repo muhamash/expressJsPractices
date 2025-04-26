@@ -10,7 +10,11 @@ var uploads = multer( {
 
 const app = express();
 
-app.post( '/', uploads.array('avatar', 3), ( req, res ) =>
+app.post( '/', uploads.fields( [ {
+    name: 'avatar', maxCount: 1
+}, {
+    name: 'photos', maxCount: 10
+} ] ), ( req, res ) =>
 {
     res.status( 200 ).send( "Hello World" );
 } );
