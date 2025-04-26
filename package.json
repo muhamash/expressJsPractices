@@ -1,0 +1,11 @@
+{
+  "name": "expressPractices",
+  "version": "1.0.0",
+  "description": "practices from sumit bhai youtube",
+  "main": "index.js",
+  "author": "Md Ashraful Alam",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
